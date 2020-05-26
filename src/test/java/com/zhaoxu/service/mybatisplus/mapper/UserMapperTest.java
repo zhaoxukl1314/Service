@@ -63,6 +63,25 @@ class UserMapperTest {
 
         //方式3
         List<User> list = new QueryChainWrapper<>(userMapper).like("name", "xu").lt("age", 20).list();
+
+
+        //另一个查询,zhao% 或者age大于等于17，age降序排列
+        new QueryChainWrapper<>(userMapper)
+                .likeRight("name","zhao").or().ge("age", 17).orderByAsc("age")
+                .list();
+
+        //查询指定日期，且增加子查询
+        new QueryChainWrapper<>(userMapper)
+                //数据库函数
+                .apply("date_format(create_time, '%Y-%m-%d')={0}","2020-05-26")
+                .inSql("manager_id","select id from user where name like 'zhao%'")
+                .list().forEach(System.out::println);
+
+        //用lamda表达式来提高优先级，也就是sql的括号，相当于 name like 'zhao%' and (age < 40 or email is not null)
+        new QueryChainWrapper<>(userMapper)
+                .likeRight("name", "zhao%")
+                .and(qw->qw.lt("age", 40).or().isNotNull("email"))
+                .list();
     }
 
 }
