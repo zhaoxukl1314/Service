@@ -3,11 +3,13 @@ package com.zhaoxu.service.mybatisplus.mapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
+import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhaoxu.service.mybatisplus.entity.User;
 import org.junit.jupiter.api.Test;
@@ -189,6 +191,26 @@ class UserMapperTest {
         System.out.println(users.getTotal());
         users.getRecords().forEach(System.out::println);
 
+    }
+
+    @Test
+    public void updateById() {
+        User user = new User();
+        user.setId(112346l);
+        user.setName("liumingq");
+        user.setEmail("liuming@qq.com");
+        userMapper.updateById(user);
+    }
+
+    @Test
+    public void updateByWrapper() {
+        User user = new User();
+        user.setAge(19);
+//        new LambdaUpdateChainWrapper<User>(userMapper).eq(User::getName, "zhaoxu").update(user);
+//        new LambdaUpdateChainWrapper<User>(userMapper).eq(User::getName, "zhaoxu").set(User::getAge, 18);
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("name", "zhaoxu");
+        userMapper.update(user, updateWrapper);
     }
 
 }
