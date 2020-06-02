@@ -1,5 +1,6 @@
 package com.zhaoxu.service.mybatisplus.entity;
 
+import com.baomidou.mybatisplus.annotation.SqlCondition;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -15,6 +16,7 @@ public class User {
     private Long id;
 
     @TableField("name")//匹配表格字段的
+//    @TableField(condition = SqlCondition.LIKE) 全局默认匹配规则
     private String name;
 
     private Integer age;
