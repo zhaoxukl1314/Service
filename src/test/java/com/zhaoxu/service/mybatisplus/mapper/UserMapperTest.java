@@ -3,10 +3,12 @@ package com.zhaoxu.service.mybatisplus.mapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhaoxu.service.mybatisplus.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,6 +152,43 @@ class UserMapperTest {
         QueryWrapper<User> queryWrapper = new QueryWrapper();
         queryWrapper.select("name", "age").like("name", "zhao").lt("age", 20);
         userMapper.selectAllUsers(queryWrapper).forEach(System.out::println);
+    }
+
+    @Test
+    public void selectPage() {
+        Page<User> page = new Page<>(2,1);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lt("age", 40);
+        Page<User> result = userMapper.selectPage(page, queryWrapper);
+        System.out.println(result.getCurrent());
+        System.out.println(result.getSize());
+        System.out.println(result.getTotal());
+        result.getRecords().forEach(System.out::println);
+    }
+
+    @Test
+    public void selectMapPage() {
+        IPage<Map<String,Object>> page = new Page<>(2,1);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lt("age", 40);
+        IPage<Map<String, Object>> map = userMapper.selectMapsPage(page, queryWrapper);
+        System.out.println(map.getCurrent());
+        System.out.println(map.getSize());
+        System.out.println(map.getTotal());
+        map.getRecords().forEach(System.out::println);
+    }
+
+    @Test
+    public void selectByPage() {
+        Page<User> page = new Page<>(2,1);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lt("age", 40);
+        IPage<User> users = userMapper.selectByPage(page, queryWrapper);
+        System.out.println(users.getCurrent());
+        System.out.println(users.getSize());
+        System.out.println(users.getTotal());
+        users.getRecords().forEach(System.out::println);
+
     }
 
 }
