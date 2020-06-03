@@ -4,13 +4,14 @@ import com.baomidou.mybatisplus.annotation.SqlCondition;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
 @TableName("user")//设置表名称
-public class User {
+public class User extends Model<User> {
 
     @TableId//若变量不是id，必须设置此注解，主键必须初始化，无此注解就会报错
     private Long id;
